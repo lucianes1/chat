@@ -6,7 +6,7 @@ class TextComposer extends StatefulWidget {
 
   TextComposer(this.sendMessage);
 
-  final Function({String text, XFile imgFile}) sendMessage;
+  final Function({String text, File imgFile}) sendMessage;
 
   @override
   _TextComposerState createState() => _TextComposerState();
@@ -34,7 +34,11 @@ class _TextComposerState extends State<TextComposer> {
           IconButton(
             icon: Icon(Icons.photo_camera),
             onPressed: () async {
-              final XFile? imgFile = await ImagePicker().pickImage(source: ImageSource.camera);
+              final imagePicker = ImagePicker();
+              File imgFile;
+
+              final image = await imagePicker.getImage(source: ImageSource.camera);
+              imgFile = File(image!.path);
 
               if (imgFile == null) return;
               widget.sendMessage(imgFile: imgFile);
